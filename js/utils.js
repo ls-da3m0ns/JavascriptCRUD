@@ -58,22 +58,25 @@ let allUsersObj = new AllUsers();
 function login(){
     var email = document.getElementById("emailLogin").value;
     var pass = document.getElementById("passwordLogin").value;
-
-    if (pass == '' | email == ''){
-        window.alert("Enter a Valid Email and Password");
-    }
-    else if (allUsersObj.hasUser(email) == true){
-        userInfo = allUsersObj.getUser(email);
-        console.log(userInfo);
-        if (pass != userInfo.get("password")){
-            window.alert("Recheck Your Password !")
+    try {
+        if (pass == '' | email == ''){
+            window.alert("Enter a Valid Email and Password");
+        }
+        else if (allUsersObj.hasUser(email) == true){
+            userInfo = allUsersObj.getUser(email);
+            console.log(userInfo);
+            if (pass != userInfo.get("password")){
+                window.alert("Recheck Your Password !")
+            }
+            else {
+            redirect("/crudapp/home.html?email=" + email);
+            }
         }
         else {
-           redirect("/crudapp/home.html?email=" + email);
+            window.alert("User not registered");
         }
-    }
-    else {
-        window.alert("User not registered");
+    } catch(err){
+        console.log("Error while loggin " + err);
     }
 }
 
@@ -82,20 +85,24 @@ function addUser(){
     var pass  = document.getElementById("passwordReg").value;
     var fullname = document.getElementById("nameReg").value;
     var phoneNumber = document.getElementById("phonenumberReg").value;
-    if(!allUsersObj.hasUser(email)){
-        if ( validateEmail(email) && validatePhoneNumber(phoneNumber) && validatePassword(pass)){
-            var userInfo = new Map();
-            userInfo.set("password", pass);
-            userInfo.set("phonenumber", phoneNumber);
-            userInfo.set("fullname",fullname);
+    try{ 
+        if(!allUsersObj.hasUser(email)){
+            if ( validateEmail(email) && validatePhoneNumber(phoneNumber) && validatePassword(pass)){
+                var userInfo = new Map();
+                userInfo.set("password", pass);
+                userInfo.set("phonenumber", phoneNumber);
+                userInfo.set("fullname",fullname);
 
-            allUsersObj.setUser(email, userInfo);
-            allUsersObj.saveUserData();
-            window.alert("User Registered");
-            redirect("/crudapp/index.html");
+                allUsersObj.setUser(email, userInfo);
+                allUsersObj.saveUserData();
+                window.alert("User Registered");
+                redirect("/crudapp/index.html");
+            }
+        } else {
+            window.alert("User already present!");
         }
-    } else {
-        window.alert("User already present!");
+    } catch(err){
+        console.log("Error Occured While adding a new user" + err);
     }
 }
 
@@ -104,15 +111,18 @@ function editUser(){
     var phoneNumber = document.getElementById("phoneHome").value;
     
     var email = getEmail();
+    try {
+        if (allUsersObj.hasUser(email) ){
+            userInfo = allUsersObj.getUser(email);
+            values.set("fullname", fullname);
+            values.set("phonenumber",phoneNumber);
+            allUsersObj.setUser(email,values);
+        }
 
-    if (allUsersObj.hasUser(email) ){
-        userInfo = allUsersObj.getUser(email);
-        values.set("fullname", fullname);
-        values.set("phonenumber",phoneNumber);
-        allUsersObj.setUser(email,values);
+        window.alert("User Details Edited!");
+    } catch(err){
+        console.log("Error " + err + "Occured while updating User details")
     }
-
-    window.alert("User Details Edited!");
 }
 
 function deleteUser(){
