@@ -152,6 +152,7 @@ function getEmail(){
     return email;
 }
 
+//function to show details of user in home page
 function showDetails(email){
     values = allUsersObj.getUser(email);
     document.getElementById('emailHome').value = email;
