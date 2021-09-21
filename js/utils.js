@@ -131,9 +131,11 @@ function deleteUser(){
     var email = getEmail();
     if (allUsersObj.hasUser(email) ){
         allUsersObj.removeUser(email);
+        window.alert("user deleted");
+    }else {
+        window.alert("User not present");
     }
     allUsersObj.saveUserData();
-    window.alert("user deleted");
     redirect("/crudapp/index.html");
 }
 
