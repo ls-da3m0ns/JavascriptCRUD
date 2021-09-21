@@ -1,6 +1,5 @@
 class AllUsers {
     #allUsers;
-
     constructor(){
         this.#allUsers = localStorage.getItem("allUsers");
         if (this.#allUsers == null){
@@ -139,10 +138,17 @@ function deleteUser(){
     redirect("/crudapp/index.html");
 }
 
+//funtion to extract email from get parameters
 function getEmail(){
     let currentLocation = window.location.href;
     let paramString = currentLocation.split('?')[1];
+    var email = null;
+    try {
     email = paramString.split("=")[1];
+    } catch(err){
+        window.alert("Not a valid URL");
+        window.location = "/crudapp/index.html";
+    }
     return email;
 }
 
