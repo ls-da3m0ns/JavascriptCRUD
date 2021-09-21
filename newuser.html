@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>User Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script type = "text/javascript" src="js/utils.js"> </script>
+    <script type = "text/javascript" src="js/validation.js"> </script>
+
+</head>
+    <body onload="loadInputData()">
+        <section class="vh-100 gradient-custom_newuser">
+            <div class="container py-5 h-100">
+              <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                  <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+          
+                      <div class="mb-md-5 mt-md-4 pb-5">
+                        <div class="form-outline form-white mb-4">
+                          <input type="email" id="emailReg" class="form-control form-control-lg" oninput="saveInputData()"/>
+                          <label class="form-label" for="emailReg">Email</label>
+                        </div>
+          
+                        <div class="form-outline form-white mb-4">
+                          <input type="password" id="passwordReg" class="form-control form-control-lg" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" oninput="saveInputData()"/>
+                          <label class="form-label" for="passwordReg">Password</label>
+                        </div>
+                        
+                        <div class="form-outline form-white mb-4">
+                            <input type="text" id="nameReg" class="form-control form-control-lg" oninput="saveInputData()"/>
+                            <label class="form-label" for="nameReg">Full Name</label>
+                          </div>
+                        
+                        <div class="form-outline form-white mb-4">
+                            <input type="text" id="phonenumberReg" class="form-control form-control-lg" oninput="saveInputData()" />
+                            <label class="form-label" for="phonenumberReg">Phone Number</label>
+                          </div>
+                        <button class="btn btn-outline-light btn-lg px-5" type="submit" onclick="addUser()">Register</button>
+                      </div>
+                        
+                      <div id="message" style="display: none;">
+                        <h3>Password must contain the following:</h3>
+                        <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                        <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                        <p id="number" class="invalid">A <b>number</b></p>
+                        <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+         
+    </body>
+</html>
