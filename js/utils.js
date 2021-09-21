@@ -77,6 +77,7 @@ function login(){
         }
     } catch(err){
         console.log("Error while loggin " + err);
+        window.alert("Unexpected error occurred while tying to login");
     }
 }
 
@@ -103,6 +104,7 @@ function addUser(){
         }
     } catch(err){
         console.log("Error Occured While adding a new user" + err);
+        window.alert("could not add User");
     }
 }
 
@@ -121,7 +123,7 @@ function editUser(){
 
         window.alert("User Details Edited!");
     } catch(err){
-        console.log("Error " + err + "Occured while updating User details")
+        console.log("Error " + err + "Occured while updating User details");
     }
 }
 
