@@ -34,91 +34,94 @@ class AllUsers {#
     saveUserData() {
         localStorage.setItem("allUsers", JSON.stringify(Array.from((this.getAllData()).entries())));
     }
+
+    login() {
+        var email = document.getElementById("emailLogin").value;
+        var pass = document.getElementById("passwordLogin").value;
+        try {
+            if (pass == '' | email == '') {
+                window.alert("Enter a Valid Email and Password");
+            } else if (allUsersObj.hasUser(email) == true) {
+                userInfo = allUsersObj.getUser(email);
+                console.log(userInfo);
+                if (pass != userInfo.get("password")) {
+                    window.alert("Recheck Your Password !")
+                } else {
+                    redirect("/crudapp/home.html?email=" + email);
+                }
+            } else {
+                window.alert("User not registered");
+            }
+        } catch (err) {
+            console.log("Error while loggin " + err);
+            window.alert("Unexpected error occurred while tying to login");
+        }
+    }
+
+    addUser() {
+        var email = document.getElementById("emailReg").value;
+        var pass = document.getElementById("passwordReg").value;
+        var fullname = document.getElementById("nameReg").value;
+        var phoneNumber = document.getElementById("phonenumberReg").value;
+        try {
+            if (!allUsersObj.hasUser(email)) {
+                if (validateEmail(email) && validatePhoneNumber(phoneNumber) && validatePassword(pass)) {
+                    var userInfo = new Map();
+                    userInfo.set("password", pass);
+                    userInfo.set("phonenumber", phoneNumber);
+                    userInfo.set("fullname", fullname);
+
+                    allUsersObj.setUser(email, userInfo);
+                    allUsersObj.saveUserData();
+                    window.alert("User Registered");
+                    redirect("/crudapp/index.html");
+                }
+            } else {
+                window.alert("User already present!");
+            }
+        } catch (err) {
+            console.log("Error Occured While adding a new user" + err);
+            window.alert("could not add User");
+        }
+    }
+
+    editUser() {
+        var fullname = document.getElementById("nameHome").value;
+        var phoneNumber = document.getElementById("phoneHome").value;
+
+        var email = getEmail();
+        try {
+            if (allUsersObj.hasUser(email)) {
+                userInfo = allUsersObj.getUser(email);
+                values.set("fullname", fullname);
+                values.set("phonenumber", phoneNumber);
+                allUsersObj.setUser(email, values);
+            }
+
+            window.alert("User Details Edited!");
+        } catch (err) {
+            console.log("Error " + err + "Occured while updating User details");
+        }
+    }
+
+    deleteUser() {
+        var email = getEmail();
+        if (allUsersObj.hasUser(email)) {
+            allUsersObj.removeUser(email);
+            window.alert("user deleted");
+        } else {
+            window.alert("User not present");
+        }
+        allUsersObj.saveUserData();
+        redirect("/crudapp/index.html");
+    }
+
 }
 
 
 let allUsersObj = new AllUsers();
 
-function login() {
-    var email = document.getElementById("emailLogin").value;
-    var pass = document.getElementById("passwordLogin").value;
-    try {
-        if (pass == '' | email == '') {
-            window.alert("Enter a Valid Email and Password");
-        } else if (allUsersObj.hasUser(email) == true) {
-            userInfo = allUsersObj.getUser(email);
-            console.log(userInfo);
-            if (pass != userInfo.get("password")) {
-                window.alert("Recheck Your Password !")
-            } else {
-                redirect("/crudapp/home.html?email=" + email);
-            }
-        } else {
-            window.alert("User not registered");
-        }
-    } catch (err) {
-        console.log("Error while loggin " + err);
-        window.alert("Unexpected error occurred while tying to login");
-    }
-}
 
-function addUser() {
-    var email = document.getElementById("emailReg").value;
-    var pass = document.getElementById("passwordReg").value;
-    var fullname = document.getElementById("nameReg").value;
-    var phoneNumber = document.getElementById("phonenumberReg").value;
-    try {
-        if (!allUsersObj.hasUser(email)) {
-            if (validateEmail(email) && validatePhoneNumber(phoneNumber) && validatePassword(pass)) {
-                var userInfo = new Map();
-                userInfo.set("password", pass);
-                userInfo.set("phonenumber", phoneNumber);
-                userInfo.set("fullname", fullname);
-
-                allUsersObj.setUser(email, userInfo);
-                allUsersObj.saveUserData();
-                window.alert("User Registered");
-                redirect("/crudapp/index.html");
-            }
-        } else {
-            window.alert("User already present!");
-        }
-    } catch (err) {
-        console.log("Error Occured While adding a new user" + err);
-        window.alert("could not add User");
-    }
-}
-
-function editUser() {
-    var fullname = document.getElementById("nameHome").value;
-    var phoneNumber = document.getElementById("phoneHome").value;
-
-    var email = getEmail();
-    try {
-        if (allUsersObj.hasUser(email)) {
-            userInfo = allUsersObj.getUser(email);
-            values.set("fullname", fullname);
-            values.set("phonenumber", phoneNumber);
-            allUsersObj.setUser(email, values);
-        }
-
-        window.alert("User Details Edited!");
-    } catch (err) {
-        console.log("Error " + err + "Occured while updating User details");
-    }
-}
-
-function deleteUser() {
-    var email = getEmail();
-    if (allUsersObj.hasUser(email)) {
-        allUsersObj.removeUser(email);
-        window.alert("user deleted");
-    } else {
-        window.alert("User not present");
-    }
-    allUsersObj.saveUserData();
-    redirect("/crudapp/index.html");
-}
 
 //funtion to extract email from get parameters
 function getEmail() {
