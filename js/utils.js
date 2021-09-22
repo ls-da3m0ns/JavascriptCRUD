@@ -1,5 +1,5 @@
-class AllUsers {#
-    allUsers;
+class AllUsers {
+    #allUsers;
     constructor() {
         this.#allUsers = localStorage.getItem("allUsers");
         if (this.#allUsers == null) {
@@ -41,8 +41,8 @@ class AllUsers {#
         try {
             if (pass == '' | email == '') {
                 window.alert("Enter a Valid Email and Password");
-            } else if (allUsersObj.hasUser(email) == true) {
-                userInfo = allUsersObj.getUser(email);
+            } else if (this.hasUser(email) == true) {
+                var userInfo = this.getUser(email);
                 console.log(userInfo);
                 if (pass != userInfo.get("password")) {
                     window.alert("Recheck Your Password !")
@@ -64,15 +64,15 @@ class AllUsers {#
         var fullname = document.getElementById("nameReg").value;
         var phoneNumber = document.getElementById("phonenumberReg").value;
         try {
-            if (!allUsersObj.hasUser(email)) {
+            if (!this.hasUser(email)) {
                 if (validateEmail(email) && validatePhoneNumber(phoneNumber) && validatePassword(pass)) {
                     var userInfo = new Map();
                     userInfo.set("password", pass);
                     userInfo.set("phonenumber", phoneNumber);
                     userInfo.set("fullname", fullname);
 
-                    allUsersObj.setUser(email, userInfo);
-                    allUsersObj.saveUserData();
+                    this.setUser(email, userInfo);
+                    this.saveUserData();
                     window.alert("User Registered");
                     redirect("/crudapp/index.html");
                 }
@@ -91,11 +91,11 @@ class AllUsers {#
 
         var email = getEmail();
         try {
-            if (allUsersObj.hasUser(email)) {
-                userInfo = allUsersObj.getUser(email);
+            if (this.hasUser(email)) {
+                userInfo = this.getUser(email);
                 values.set("fullname", fullname);
                 values.set("phonenumber", phoneNumber);
-                allUsersObj.setUser(email, values);
+                this.setUser(email, values);
             }
 
             window.alert("User Details Edited!");
@@ -106,13 +106,13 @@ class AllUsers {#
 
     deleteUser() {
         var email = getEmail();
-        if (allUsersObj.hasUser(email)) {
-            allUsersObj.removeUser(email);
+        if (this.hasUser(email)) {
+            this.removeUser(email);
             window.alert("user deleted");
         } else {
             window.alert("User not present");
         }
-        allUsersObj.saveUserData();
+        this.saveUserData();
         redirect("/crudapp/index.html");
     }
 
